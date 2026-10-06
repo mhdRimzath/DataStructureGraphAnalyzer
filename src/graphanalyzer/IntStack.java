@@ -20,4 +20,17 @@ public class IntStack {
         return values[top--];
     }
 
+    public int peek() {
+        if (top == -1) throw new IllegalStateException("Stack is empty.");
+        return values[top];
+    }
+
+    public String toString() {
+        StringBuilder text = new StringBuilder("Top -> [");
+        for (int i = top; i >= 0; i--) {
+            if (i < top) text.append(", ");
+            text.append(values[i]);
+        }
+        return text.append("]").toString();
+    }
 }
