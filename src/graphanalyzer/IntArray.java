@@ -23,6 +23,15 @@ public class IntArray {
         size++;
     }
 
+    public int delete(int index) {
+        if (size == 0) throw new IllegalStateException("Array is empty.");
+        if (index < 0 || index >= size) throw new IllegalArgumentException("Invalid deletion index.");
+        int removed = values[index];
+        for (int i = index; i < size - 1; i++) values[i] = values[i + 1];
+        size--;
+        return removed;
+    }
+
     public int[] toArray() { return Arrays.copyOf(values, size); }
     public String toString() { return Arrays.toString(toArray()); }
 }
