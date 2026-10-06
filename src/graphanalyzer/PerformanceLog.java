@@ -11,8 +11,12 @@ public class PerformanceLog {
         rows.add(description + System.lineSeparator() + "  " + result);
     }
 
+    public void record(String description, Graph.TraversalResult result) {
+        rows.add(description + System.lineSeparator() + "  " + result);
+    }
+
     public void display() {
         if (rows.isEmpty()) System.out.println("No recorded searches or traversals yet.");
         for (int i = 0; i < rows.size(); i++) System.out.println((i + 1) + ". " + rows.get(i));
     }
-}git statu
+}
