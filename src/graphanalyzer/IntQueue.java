@@ -28,4 +28,17 @@ public class IntQueue {
         return removed;
     }
 
+    public int peek() {
+        if (isEmpty()) throw new IllegalStateException("Queue is empty.");
+        return values[front];
+    }
+
+    public String toString() {
+        StringBuilder text = new StringBuilder("Front -> [");
+        for (int i = 0; i < size; i++) {
+            if (i > 0) text.append(", ");
+            text.append(values[(front + i) % values.length]);
+        }
+        return text.append("]").toString();
+    }
 }
