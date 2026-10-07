@@ -341,6 +341,84 @@ public class Main {
             }
         );
     }
+
+    // ==================================================
+    // MEMBER 2 — STACK AND QUEUE
+    // ==================================================
+
+    private static void stackMenu() {
+        submenu(
+            "STACK OPERATIONS",
+            "1. Push\n"
+                + "2. Pop\n"
+                + "3. Peek\n"
+                + "4. Display",
+            4,
+            choice -> {
+                switch (choice) {
+                    case 1:
+                        int value = readInt("Value: ");
+                        stack.push(value);
+
+                        System.out.println("Value pushed.");
+                        break;
+
+                    case 2:
+                        System.out.println(
+                            "Popped value: " + stack.pop()
+                        );
+                        break;
+
+                    case 3:
+                        System.out.println(
+                            "Top value: " + stack.peek()
+                        );
+                        break;
+
+                    case 4:
+                        System.out.println(stack);
+                        break;
+                }
+            }
+        );
+    }
+
+    private static void queueMenu() {
+        submenu(
+            "QUEUE OPERATIONS",
+            "1. Enqueue\n"
+                + "2. Dequeue\n"
+                + "3. Peek / Front\n"
+                + "4. Display",
+            4,
+            choice -> {
+                switch (choice) {
+                    case 1:
+                        int value = readInt("Value: ");
+                        queue.enqueue(value);
+
+                        System.out.println("Value enqueued.");
+                        break;
+
+                    case 2:
+                        System.out.println(
+                            "Dequeued value: " + queue.dequeue()
+                        );
+                        break;
+
+                    case 3:
+                        System.out.println(
+                            "Front value: " + queue.peek()
+                        );
+                        break;
+
+                    case 4:
+                        System.out.println(queue);
+                        break;
+                }
+            }
+        );
+    }
     }
 
 
