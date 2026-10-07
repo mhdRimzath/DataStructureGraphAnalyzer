@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Initial graph storage, vertex/edge validation and adjacency-list display. */
+/** Simple, undirected, unweighted adjacency-list graph. Labels are case-sensitive. */
 public class Graph {
     private static final int MAX_VERTICES = 200;
     private final Map<String, Integer> ids = new LinkedHashMap<>();
@@ -42,6 +42,49 @@ public class Graph {
 
     public boolean isEmpty() { return labels.isEmpty(); }
 
+    public TraversalResult bfs(String startLabel) {
+        int startVertex = requireVertex(startLabel);
+        long start = System.nanoTime();
+        boolean[] visited = new boolean[labels.size()];
+        IntQueue queue = new IntQueue(labels.size());
+        List<String> order = new ArrayList<>();
+        int examined = 0;
+        visited[startVertex] = true; // Mark on enqueue: each vertex enters the queue once.
+        queue.enqueue(startVertex);
+        while (!queue.isEmpty()) {
+            int current = queue.dequeue();
+            order.add(labels.get(current));
+            for (int neighbour : adjacency.get(current)) {
+                examined++;
+                if (!visited[neighbour]) {
+                    visited[neighbour] = true;
+                    queue.enqueue(neighbour);
+                }
+            }
+        }
+        return new TraversalResult(order, examined, System.nanoTime() - start);
+    }
+
+    public TraversalResult dfs(String startLabel) {
+        int startVertex = requireVertex(startLabel);
+        long start = System.nanoTime();
+        boolean[] visited = new boolean[labels.size()];
+        List<String> order = new ArrayList<>();
+        int examined = visit(startVertex, visited, order);
+        return new TraversalResult(order, examined, System.nanoTime() - start);
+    }
+
+    private int visit(int current, boolean[] visited, List<String> order) {
+        visited[current] = true;
+        order.add(labels.get(current));
+        int examined = 0;
+        for (int neighbour : adjacency.get(current)) {
+            examined++;
+            if (!visited[neighbour]) examined += visit(neighbour, visited, order);
+        }
+        return examined;
+    }
+
     public String toString() {
         if (isEmpty()) return "Graph is empty.";
         StringBuilder text = new StringBuilder();
@@ -53,4 +96,23 @@ public class Graph {
         return text.toString();
     }
 
+    public static class TraversalResult {
+        public final List<String> order;
+        public final int examinedNeighbours;
+        public final long nanoseconds;
+
+        private TraversalResult(List<String> order, int examinedNeighbours, long nanoseconds) {
+            this.order = java.util.Collections.unmodifiableList(new ArrayList<>(order));
+            this.examinedNeighbours = examinedNeighbours;
+            this.nanoseconds = nanoseconds;
+        }
+
+        public int steps() { return order.size() + examinedNeighbours; }
+
+        public String toString() {
+            return "Order: " + order + " | vertices visited: " + order.size()
+                + " | adjacency entries examined: " + examinedNeighbours
+                + " | steps: " + steps() + " | time: " + nanoseconds + " ns";
+        }
+    }
 }
