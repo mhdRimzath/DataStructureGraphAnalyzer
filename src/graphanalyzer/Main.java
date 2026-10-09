@@ -419,6 +419,73 @@ public class Main {
             }
         );
     }
+    // ==================================================
+    // MEMBER 3 — LINKED LIST AND RESULTS
+    // ==================================================
+
+    private static void linkedListMenu() {
+        submenu(
+            "LINKED LIST OPERATIONS",
+            "1. Insert at end\n"
+                + "2. Delete first matching value\n"
+                + "3. Search\n"
+                + "4. Display",
+            4,
+            choice -> {
+                switch (choice) {
+                    case 1:
+                        int value = readInt("Value: ");
+                        list.insertLast(value);
+
+                        System.out.println("Value inserted.");
+                        break;
+
+                    case 2:
+                        int deleteValue = readInt("Value to delete: ");
+
+                        if (list.delete(deleteValue)) {
+                            System.out.println("Value deleted.");
+                        } else {
+                            System.out.println("Value not found.");
+                        }
+                        break;
+
+                    case 3:
+                        int target = readInt("Search value: ");
+                        SearchResult result = list.search(target);
+
+                        System.out.println(result);
+
+                        log.record(
+                            "Linked list search"
+                                + ", target=" + target
+                                + ", list=" + list,
+                            result
+                        );
+                        break;
+
+                    case 4:
+                        System.out.println("Linked list: " + list);
+                        break;
+                }
+            }
+        );
+    }
+
+    private static void displayAllResults() {
+        System.out.println("\n===== CURRENT DATA =====");
+
+        System.out.println("Array: " + array);
+        System.out.println("Stack: " + stack);
+        System.out.println("Queue: " + queue);
+        System.out.println("Linked list: " + list);
+
+        System.out.println("\nGraph:");
+        System.out.println(graph);
+
+        System.out.println("\n===== RECORDED RESULTS =====");
+        log.display();
+    }
     }
 
 
