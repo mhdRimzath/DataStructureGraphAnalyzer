@@ -79,6 +79,7 @@ public class Main {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+        }
             // ==================================================
     // MEMBER 1 — MAIN MENU, ARRAY AND SEARCHING
     // ==================================================
@@ -485,6 +486,121 @@ public class Main {
 
         System.out.println("\n===== RECORDED RESULTS =====");
         log.display();
+    }
+
+    // ==================================================
+    // MEMBER 4 — GRAPH, BFS AND DFS
+    // ==================================================
+
+    private static void graphMenu() {
+        submenu(
+            "GRAPH OPERATIONS",
+            "1. Add Vertex\n"
+                + "2. Add Edge\n"
+                + "3. Display Graph\n"
+                + "4. BFS Traversal\n"
+                + "5. DFS Traversal",
+            5,
+            choice -> {
+                switch (choice) {
+                    case 1:
+                        String vertex = readText("Vertex name: ");
+                        graph.addVertex(vertex);
+
+                        System.out.println("Vertex added.");
+                        break;
+
+                    case 2:
+                        String from = readText("First vertex: ");
+                        String to = readText("Second vertex: ");
+
+                        graph.addEdge(from, to);
+
+                        System.out.println("Undirected edge added.");
+                        break;
+
+                    case 3:
+                        System.out.println(graph);
+                        break;
+
+                    case 4:
+                        traverseGraph(true);
+                        break;
+
+                    case 5:
+                        traverseGraph(false);
+                        break;
+                }
+            }
+        );
+    }
+
+    private static void traverseGraph(boolean breadthFirst) {
+        String start = readText("Start vertex: ");
+
+        Graph.TraversalResult result;
+
+        if (breadthFirst) {
+            result = graph.bfs(start);
+        } else {
+            result = graph.dfs(start);
+        }
+
+        String algorithm = breadthFirst ? "BFS" : "DFS";
+
+        System.out.println(algorithm + ": " + result);
+
+        System.out.println(
+            "Only vertices reachable from " + start + " are visited."
+        );
+
+        log.record(
+            algorithm
+                + " from " + start
+                + ", graph snapshot:\n" + graph,
+            result
+        );
+    }
+
+    private static void compareTraversals() {
+        if (graph.isEmpty()) {
+            System.out.println("Add graph vertices first.");
+            return;
+        }
+
+        String start = readText("Start vertex for both traversals: ");
+
+        Graph.TraversalResult bfs = graph.bfs(start);
+        Graph.TraversalResult dfs = graph.dfs(start);
+
+        System.out.println("BFS: " + bfs);
+        System.out.println("DFS: " + dfs);
+
+        System.out.println(
+            "Steps = visited vertices + examined adjacency entries."
+        );
+
+        System.out.println(
+            "Both have O(V + E) overall time complexity."
+        );
+
+        System.out.println(
+            "For the same reachable component, these step totals are equal."
+        );
+
+        System.out.println(
+            "Each undirected edge contributes two adjacency entries."
+        );
+
+        System.out.println(
+            "Single-run execution times may vary."
+        );
+
+        String description =
+            " from " + start + ", graph snapshot:\n" + graph;
+
+        log.record("BFS comparison" + description, bfs);
+        log.record("DFS comparison" + description, dfs);
     }
     }
 
